@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
-<title>Haloperidol EV — Riesgo QT/TdP</title>
+<meta name="author" content="Dr. Pablo Moreira-Zabala — Unidad de Psiquiatría de Enlace y Medicina Psicosomática, Hospital Barro Luco Trudeau">
+<title>Haloperidol EV — Riesgo QT/TdP · Dr. Pablo Moreira-Zabala</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -33,6 +34,8 @@
          border-bottom:2px solid var(--ink); padding-bottom:12px; margin-bottom:4px;}
   h1{font-size:19px; font-weight:600; letter-spacing:-0.01em;}
   h1 .ev{color:var(--accent);}
+  .byline{font-size:12px; color:var(--muted); margin-top:4px; line-height:1.4;}
+  .byline b{font-weight:600; color:var(--ink);}
   .sub{font-size:12px; color:var(--muted);}
   .sub a{color:var(--accent-ink); text-decoration:none; border-bottom:1px dotted var(--accent);}
   .topline{display:flex; justify-content:space-between; align-items:center; gap:12px; margin:6px 0 18px;}
@@ -48,6 +51,8 @@
   /* ---- mobile compact verdict bar ---- */
   .m-bar{display:none;}
   @media (max-width:900px){
+    header{flex-wrap:wrap;}
+    header .sub{width:100%; margin-top:6px; font-size:11px;}
     .m-bar{
       display:flex; align-items:center; gap:10px;
       position:sticky; top:0; z-index:50;
@@ -199,7 +204,10 @@
 <div class="app">
 
   <header>
-    <h1>Haloperidol <span class="ev">endovenoso</span> · riesgo QT/TdP</h1>
+    <div>
+      <h1>Haloperidol <span class="ev">endovenoso</span> · riesgo QT/TdP</h1>
+      <div class="byline"><b>Dr. Pablo Moreira-Zabala</b> · Unidad de Psiquiatría de Enlace y Medicina Psicosomática, Hospital Barro Luco Trudeau</div>
+    </div>
     <div class="sub">Calculadora de decisión · reglas trazadas a evidencia</div>
   </header>
   <div class="m-bar" id="m-bar" role="button" tabindex="0" aria-label="Ir al veredicto completo">

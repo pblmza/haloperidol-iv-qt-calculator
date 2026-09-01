@@ -41,3 +41,6 @@ Herramienta de apoyo a la decisión clínica. No constituye prescripción ni pro
 ## Licencia
 
 MIT
+---
+
+**Autor:** Dr. Pablo Moreira-Zabala · Unidad de Psiquiatría de Enlace y Medicina Psicosomática, Hospital Barro Luco Trudeau
