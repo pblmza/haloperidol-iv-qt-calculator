@@ -656,6 +656,19 @@
 
   calc();
 })();
+/* ---- contador de visitas privado ----
+   Píxel 1x1 invisible que cuenta dispositivos únicos (hit) en hits.sh.
+   El número SOLO se ve abriendo la URL secreta (clave de 24 hex): quien
+   conozca la clave puede verlo — no es un mecanismo de seguridad, es
+   oscuridad por capacidad. Sin cookies ni datos del visitante. */
+(function(){
+  try {
+    if (!sessionStorage.getItem("hbq-hit")) {
+      sessionStorage.setItem("hbq-hit", "1");
+      new Image().src = "https://hits.sh/pblmza.github.io/haloperidol-iv-qt-calculator/privado-4f6ee1ade3f7d5d48f58b6ef.svg?ref=" + Date.now();
+    }
+  } catch(e) {}
+})();
 </script>
 </body>
 </html>
