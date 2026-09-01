@@ -407,6 +407,12 @@
         </div>
       </details>
     </p>
+    <p class="fineprint">
+      <b>Cómo citar</b>
+      <span id="cite-text" style="display:block; margin-top:5px; color:var(--ink);">Moreira-Zabala P. <i>Calculadora: haloperidol endovenoso y riesgo QT/TdP.</i> Versión 1.0.0. Zenodo; 2026. doi:10.5281/zenodo.22231704</span>
+      <span style="display:block; margin-top:4px; font-size:10.5px;">DOI de concepto (siempre la última versión): 10.5281/zenodo.22231704 · Esta versión exacta (v1.0.0): 10.5281/zenodo.22231705</span>
+      <button type="button" id="btn-cite" style="margin-top:8px;font-family:var(--font);font-size:11.5px;color:var(--accent-ink);background:#fff;border:1px solid var(--accent);border-radius:6px;padding:5px 12px;min-height:30px;cursor:pointer;">Copiar cita</button>
+    </p>
     <p class="fineprint">Herramienta de apoyo a la decisión clínica. No constituye prescripción ni protocolo institucional; las decisiones finales corresponden al clínico tratante según el paciente y el contexto local. Veredicto construido con reglas explícitas y trazables — ninguna regla es ponderación oculta.</p>
   </footer>
 </div>
@@ -629,6 +635,23 @@
     fill.style.width = pct + "%";
     fill.className = "fill" + (total>=100 ? " hot" : (total>=50 ? " mid" : ""));
   }
+
+  /* ---- copiar cita ---- */
+  $("btn-cite").addEventListener("click", async ()=>{
+    const txt = $("cite-text").textContent.trim();
+    try {
+      await navigator.clipboard.writeText(txt);
+      $("btn-cite").textContent = "✓ Copiada";
+    } catch(e) {
+      /* fallback para contextos sin clipboard API */
+      const ta = document.createElement("textarea");
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); $("btn-cite").textContent = "✓ Copiada"; }
+      catch(e2){ $("btn-cite").textContent = "Selecciona y copia manualmente"; }
+      ta.remove();
+    }
+    setTimeout(()=>{ $("btn-cite").textContent = "Copiar cita"; }, 2200);
+  });
 
   calc();
 })();

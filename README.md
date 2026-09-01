@@ -38,6 +38,12 @@ Abrir `index.html` en cualquier navegador. Sin dependencias, sin datos que salga
 
 Herramienta de apoyo a la decisión clínica. No constituye prescripción ni protocolo institucional; las decisiones finales corresponden al clínico tratante según el paciente y el contexto local. El veredicto integra valores **medidos** (nunca predice QTc) y factores de riesgo documentados.
 
+## Cómo citar
+
+> Moreira-Zabala P. *Calculadora: haloperidol endovenoso y riesgo QT/TdP.* Versión 1.0.0. Zenodo; 2026. doi:[10.5281/zenodo.22231704](https://doi.org/10.5281/zenodo.22231704)
+
+DOI de concepto (siempre resuelve a la última versión): `10.5281/zenodo.22231704` · DOI de esta versión exacta (v1.0.0): `10.5281/zenodo.22231705`. Depósito: [zenodo.org/records/22231705](https://zenodo.org/records/22231705)
+
 ## Versiones y vigencia
 
 **v1.0.0** · Evidencia revisada por última vez: **31-08-2026** (ver [CHANGELOG.md](CHANGELOG.md) para el detalle completo de reglas por versión). Próxima revisión sugerida: ante nuevos RCTs o ≤12 meses (ago-2027). Una herramienta que codifica umbrales envejece — revisa la versión antes de confiar en un umbral.
