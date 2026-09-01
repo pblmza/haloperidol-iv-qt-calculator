@@ -1,5 +1,9 @@
 # Calculadora Haloperidol EV — Riesgo QT/TdP
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22231704.svg)](https://doi.org/10.5281/zenodo.22231704)
+[![Código: MIT](https://img.shields.io/badge/C%C3%B3digo-MIT-blue.svg)](LICENSE)
+[![Contenido: CC BY 4.0](https://img.shields.io/badge/Contenido-CC%20BY%204.0-lightgrey.svg)](LICENSE-CONTENT.md)
+
 Calculadora clínica de decisión para evaluar el riesgo de prolongación de QT / torsades de pointes antes y durante el uso de **haloperidol endovenoso** en delirium. Un solo archivo HTML, sin backend, funciona offline.
 
 **[Abrir la calculadora](https://pblmza.github.io/haloperidol-iv-qt-calculator/)** (GitHub Pages)
@@ -48,9 +52,19 @@ DOI de concepto (siempre resuelve a la última versión): `10.5281/zenodo.222317
 
 **v1.0.0** · Evidencia revisada por última vez: **31-08-2026** (ver [CHANGELOG.md](CHANGELOG.md) para el detalle completo de reglas por versión). Próxima revisión sugerida: ante nuevos RCTs o ≤12 meses (ago-2027). Una herramienta que codifica umbrales envejece — revisa la versión antes de confiar en un umbral.
 
-## Licencia
+## Cómo citar
 
-MIT
+Moreira-Zabala P. *Calculadora: haloperidol endovenoso y riesgo QT/TdP*. Versión 1.0.0. Zenodo; 2026. [doi:10.5281/zenodo.22231704](https://doi.org/10.5281/zenodo.22231704)
+
+Use el **DOI de concepto** (10.5281/zenodo.22231704) para referirse a la herramienta en general, y el **DOI de versión** (10.5281/zenodo.22231705 para v1.0.0) cuando importe qué reglas exactas estaban vigentes — por ejemplo, al reportar un estudio de usabilidad o de impacto decisional.
+
+## Licencias
+
+- **Código**: licencia MIT (ver [LICENSE](LICENSE)).
+- **Contenido clínico** —reglas, umbrales, textos y síntesis de la evidencia—: [CC BY 4.0](LICENSE-CONTENT.md).
+
+Al reutilizar o adaptar el contenido, cite la fuente y la versión, señale las modificaciones realizadas y conserve el aviso de que se trata de una herramienta de apoyo a la decisión clínica y no de una prescripción ni de un protocolo institucional.
+
 ---
 
-**Autor:** Dr. Pablo Moreira-Zabala · Unidad de Psiquiatría de Enlace y Medicina Psicosomática, Hospital Barro Luco Trudeau
+**Autor:** Dr. Pablo Moreira-Zabala · Unidad de Psiquiatría de Enlace y Medicina Psicosomática, Hospital Barros Luco Trudeau
