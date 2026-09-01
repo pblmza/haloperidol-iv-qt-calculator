@@ -46,7 +46,7 @@ Herramienta de apoyo a la decisión clínica. No constituye prescripción ni pro
 
 > Moreira-Zabala P. *Calculadora: haloperidol endovenoso y riesgo QT/TdP.* Versión 1.0.0. Zenodo; 2026. doi:[10.5281/zenodo.22231704](https://doi.org/10.5281/zenodo.22231704)
 
-DOI de concepto (siempre resuelve a la última versión): `10.5281/zenodo.22231704` · DOI de esta versión exacta (v1.0.0): `10.5281/zenodo.22231705`. Depósito: [zenodo.org/records/22231705](https://zenodo.org/records/22231705)
+DOI de concepto (siempre resuelve a la última versión): `10.5281/zenodo.22231704` · DOI de v1.0.1: `10.5281/zenodo.22232104` · DOI de v1.0.0: `10.5281/zenodo.22231705`
 
 ## Versiones y vigencia
 
