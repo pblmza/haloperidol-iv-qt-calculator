@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
 <title>Haloperidol EV — Riesgo QT/TdP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +40,31 @@
 
   /* ---------- layout ---------- */
   .grid{display:grid; grid-template-columns: 1fr 400px; gap:32px; align-items:start;}
-  @media (max-width:900px){ .grid{grid-template-columns:1fr;} }
+  @media (max-width:900px){
+    .grid{grid-template-columns:1fr;}
+    .rct{grid-template-columns:1fr 1fr;}
+  }
+
+  /* ---- mobile compact verdict bar ---- */
+  .m-bar{display:none;}
+  @media (max-width:900px){
+    .m-bar{
+      display:flex; align-items:center; gap:10px;
+      position:sticky; top:0; z-index:50;
+      margin:0 -22px 14px; padding:10px 22px;
+      padding-top:calc(10px + env(safe-area-inset-top));
+      background:#fff; border-bottom:1px solid var(--border);
+      cursor:pointer; -webkit-tap-highlight-color:transparent;
+    }
+    .m-bar .dot{width:12px; height:12px; border-radius:50%; flex-shrink:0; background:var(--faint);}
+    .m-bar .txt{flex:1; min-width:0;}
+    .m-bar .headline{font-size:13.5px; font-weight:600; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .m-bar .chip-txt{font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);}
+    .m-bar .go{font-size:11px; color:var(--accent-ink); flex-shrink:0;}
+    .m-bar.st-red .dot{background:var(--red); box-shadow:0 0 0 3px var(--red-wash);}
+    .m-bar.st-amber .dot{background:var(--amber); box-shadow:0 0 0 3px var(--amber-wash);}
+    .m-bar.st-green .dot{background:var(--green); box-shadow:0 0 0 3px var(--green-wash);}
+  }
 
   /* ---------- form ---------- */
   section{margin-bottom:26px;}
@@ -50,18 +75,18 @@
   .field{display:flex; flex-direction:column; gap:4px;}
   .field label{font-size:12.5px; font-weight:500; color:var(--ink);}
   .field .hint{font-size:11px; color:var(--faint); line-height:1.35;}
-  input[type=number]{
-    font-family:var(--mono); font-size:15px; color:var(--ink);
-    border:1px solid var(--border); border-radius:6px; padding:7px 10px; width:100%;
-    background:#fff; min-height:38px;
+  input[type=number], input[type=text]{
+    font-family:var(--mono); font-size:16px; color:var(--ink);
+    border:1px solid var(--border); border-radius:6px; padding:8px 10px; width:100%;
+    background:#fff; min-height:44px;
     transition:border-color .12s ease;
   }
-  input[type=number]:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px rgba(14,116,144,.12);}
-  input[type=number]::placeholder{color:var(--faint); font-family:var(--font); font-size:12.5px;}
+  input[type=number]:focus, input[type=text]:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px rgba(14,116,144,.12);}
+  input[type=number]::placeholder, input[type=text]::placeholder{color:var(--faint); font-family:var(--font); font-size:12.5px;}
   .seg{display:flex; border:1px solid var(--border); border-radius:6px; overflow:hidden;}
   .seg button{
     flex:1; font-family:var(--font); font-size:13px; color:var(--muted); background:#fff;
-    border:none; border-right:1px solid var(--border); padding:8px 6px; min-height:38px; cursor:pointer;
+    border:none; border-right:1px solid var(--border); padding:8px 6px; min-height:44px; cursor:pointer;
     transition:background .1s ease;
   }
   .seg button:last-child{border-right:none;}
@@ -71,7 +96,7 @@
 
   .checks{display:flex; flex-direction:column; gap:2px; border:1px solid var(--border); border-radius:6px; overflow:hidden;}
   .check{display:flex; align-items:center; gap:10px; padding:9px 12px; background:#fff;
-         border-bottom:1px solid var(--hair); cursor:pointer; min-height:40px;}
+         border-bottom:1px solid var(--hair); cursor:pointer; min-height:44px;}
   .check:last-child{border-bottom:none;}
   .check:hover{background:var(--wash);}
   .check input{position:absolute; opacity:0; pointer-events:none;}
@@ -177,9 +202,17 @@
     <h1>Haloperidol <span class="ev">endovenoso</span> · riesgo QT/TdP</h1>
     <div class="sub">Calculadora de decisión · reglas trazadas a evidencia</div>
   </header>
+  <div class="m-bar" id="m-bar" role="button" tabindex="0" aria-label="Ir al veredicto completo">
+    <span class="dot"></span>
+    <span class="txt">
+      <span class="chip-txt" id="mb-chip">—</span>
+      <div class="headline" id="mb-headline">Completa los datos del paciente</div>
+    </span>
+    <span class="go">ver detalle ↓</span>
+  </div>
   <div class="topline">
     <span class="note" style="font-size:12px;color:var(--muted);">Completa los campos — el veredicto se actualiza en vivo. No predice QTc: integra valores medidos y factores de riesgo.</span>
-    <span class="note-hide" style="font-size:11px;color:var(--faint);">Uso asistido · no reemplaza juicio clínico</span>
+    <button type="button" id="btn-reset" style="font-family:var(--font);font-size:12px;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:6px;padding:6px 12px;min-height:32px;cursor:pointer;flex-shrink:0;">Limpiar</button>
   </div>
 
   <div class="grid">
@@ -382,6 +415,29 @@
   inputs.forEach(i=>i.addEventListener("input", calc));
   checks.forEach(i=>i.addEventListener("change", calc));
 
+  /* ---- mobile bar: tap to scroll to full verdict ---- */
+  const goVerdict = () => {
+    const v = $("verdict");
+    const y = v.getBoundingClientRect().top + window.scrollY - 8;
+    window.scrollTo(0, y);
+    v.setAttribute("tabindex","-1"); v.focus({preventScroll:true});
+  };
+  $("m-bar").addEventListener("click", goVerdict);
+  $("m-bar").addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); goVerdict(); }});
+
+  /* ---- reset button ---- */
+  $("btn-reset").addEventListener("click", ()=>{
+    inputs.forEach(i=>{ i.value=""; });
+    checks.forEach(i=>{ i.checked=false; });
+    document.querySelectorAll("[data-sexo]").forEach(b=>b.setAttribute("aria-pressed","false"));
+    sexo = null;
+    document.querySelectorAll('[data-freq]').forEach(b=>b.setAttribute("aria-pressed","false"));
+    document.querySelector('[data-freq="3"]').setAttribute("aria-pressed","true");
+    freq = 3;
+    calc();
+    window.scrollTo(0, 0);
+  });
+
   const num = (id) => {
     const el = $(id); if (!el) return null;
     /* acepta coma o punto como decimal (los rangos de estos campos nunca usan miles) */
@@ -496,6 +552,13 @@
     chip.textContent = chipTxt;
     head.textContent = headline;
     sub.textContent = subTxt;
+
+    /* mobile compact bar sync */
+    const mb = $("m-bar");
+    const mbState = cls.replace("v-","st-");
+    mb.className = "m-bar " + mbState;
+    $("mb-chip").textContent = chipTxt;
+    $("mb-headline").textContent = headline;
 
     /* stop-msg */
     const sm = $("stop-msg");
