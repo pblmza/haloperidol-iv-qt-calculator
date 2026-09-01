@@ -50,7 +50,7 @@ DOI de concepto (siempre resuelve a la última versión): `10.5281/zenodo.222317
 
 ## Versiones y vigencia
 
-**v1.0.0** · Evidencia revisada por última vez: **31-08-2026** (ver [CHANGELOG.md](CHANGELOG.md) para el detalle completo de reglas por versión). Próxima revisión sugerida: ante nuevos RCTs o ≤12 meses (ago-2027). Una herramienta que codifica umbrales envejece — revisa la versión antes de confiar en un umbral.
+**v1.0.1** · Evidencia revisada por última vez: **31-08-2026** (ver [CHANGELOG.md](CHANGELOG.md) para el detalle completo de reglas por versión). Próxima revisión sugerida: ante nuevos RCTs o ≤12 meses (ago-2027). Una herramienta que codifica umbrales envejece — revisa la versión antes de confiar en un umbral.
 
 ## Cómo citar
 

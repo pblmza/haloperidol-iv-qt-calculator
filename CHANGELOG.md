@@ -3,6 +3,18 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 El campo **"Evidencia revisada"** marca hasta dónde llega la literatura que respalda las reglas codificadas — cualquier cambio de umbrales DEBE venir acompañado de nueva evidencia citada.
 
+## [1.0.1] — 2026-09-01
+
+### Añadido
+- Bloque "Cómo citar" en el footer con DOI Zenodo (concepto + versión) y botón de copiar cita.
+- Link "Código y reglas en GitHub" junto a los DOIs.
+
+### Cambiado
+- La cita sugerida ahora referencia **v1.0.1**.
+
+### Invariante
+- **Sin cambios en reglas clínicas, umbrales ni lógica del veredicto** respecto de v1.0.0 (verificado: diff solo cosmetico/cita).
+
 ## [1.0.0] — 2026-08-31
 
 ### Evidencia revisada
