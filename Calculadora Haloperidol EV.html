@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haloperidol EV — Riesgo QT/TdP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#111827; --muted:#6b7280; --faint:#9ca3af;
+    --border:#e5e7eb; --hair:#f0f1f3; --wash:#f9fafb;
+    --accent:#0e7490; --accent-ink:#155e75;
+    --red:#b91c1c; --red-wash:#fef2f2; --red-border:#fecaca;
+    --amber:#b45309; --amber-wash:#fffbeb; --amber-border:#fde68a;
+    --green:#047857; --green-wash:#ecfdf5; --green-border:#a7f3d0;
+    --font: "IBM Plex Sans", ui-sans-serif, "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  *{box-sizing:border-box; margin:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:var(--font); color:var(--ink); background:#fff;
+    font-size:14px; line-height:1.45;
+    text-wrap:pretty;
+  }
+  .app{max-width:1100px; margin:0 auto; padding:26px 22px 60px;}
+
+  /* ---------- header ---------- */
+  header{display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+         border-bottom:2px solid var(--ink); padding-bottom:12px; margin-bottom:4px;}
+  h1{font-size:19px; font-weight:600; letter-spacing:-0.01em;}
+  h1 .ev{color:var(--accent);}
+  .sub{font-size:12px; color:var(--muted);}
+  .sub a{color:var(--accent-ink); text-decoration:none; border-bottom:1px dotted var(--accent);}
+  .topline{display:flex; justify-content:space-between; align-items:center; gap:12px; margin:6px 0 18px;}
+  .topline .note{font-size:11px; color:var(--faint);}
+
+  /* ---------- layout ---------- */
+  .grid{display:grid; grid-template-columns: 1fr 400px; gap:32px; align-items:start;}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr;} }
+
+  /* ---------- form ---------- */
+  section{margin-bottom:26px;}
+  .sec-label{font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+             color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:6px; margin-bottom:12px;}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px;}
+  .row .full{grid-column:1 / -1;}
+  .field{display:flex; flex-direction:column; gap:4px;}
+  .field label{font-size:12.5px; font-weight:500; color:var(--ink);}
+  .field .hint{font-size:11px; color:var(--faint); line-height:1.35;}
+  input[type=number]{
+    font-family:var(--mono); font-size:15px; color:var(--ink);
+    border:1px solid var(--border); border-radius:6px; padding:7px 10px; width:100%;
+    background:#fff; min-height:38px;
+    transition:border-color .12s ease;
+  }
+  input[type=number]:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 2px rgba(14,116,144,.12);}
+  input[type=number]::placeholder{color:var(--faint); font-family:var(--font); font-size:12.5px;}
+  .seg{display:flex; border:1px solid var(--border); border-radius:6px; overflow:hidden;}
+  .seg button{
+    flex:1; font-family:var(--font); font-size:13px; color:var(--muted); background:#fff;
+    border:none; border-right:1px solid var(--border); padding:8px 6px; min-height:38px; cursor:pointer;
+    transition:background .1s ease;
+  }
+  .seg button:last-child{border-right:none;}
+  .seg button[aria-pressed="true"]{background:var(--accent); color:#fff; font-weight:500;}
+  .seg button:hover{background:var(--wash);}
+  .seg button[aria-pressed="true"]:hover{background:var(--accent-ink);}
+
+  .checks{display:flex; flex-direction:column; gap:2px; border:1px solid var(--border); border-radius:6px; overflow:hidden;}
+  .check{display:flex; align-items:center; gap:10px; padding:9px 12px; background:#fff;
+         border-bottom:1px solid var(--hair); cursor:pointer; min-height:40px;}
+  .check:last-child{border-bottom:none;}
+  .check:hover{background:var(--wash);}
+  .check input{position:absolute; opacity:0; pointer-events:none;}
+  .box{width:16px; height:16px; border:1.5px solid var(--faint); border-radius:4px; flex-shrink:0;
+       display:grid; place-items:center; transition:all .1s ease; background:#fff;}
+  .check input:checked ~ .box{background:var(--accent); border-color:var(--accent);}
+  .check input:checked ~ .box::after{content:""; width:9px; height:5px; border-left:2px solid #fff;
+       border-bottom:2px solid #fff; transform:rotate(-45deg) translateY(-1px);}
+  .check .txt{font-size:13px; flex:1;}
+  .check .txt .why{font-size:11px; color:var(--faint); display:block;}
+
+  .qt-live{display:flex; gap:8px; align-items:center; margin-top:2px;}
+  .qt-live .flag{font-size:11.5px; font-weight:500; padding:3px 9px; border-radius:4px; display:none;}
+  .qt-live .flag.show{display:inline-block;}
+  .flag.warn{background:var(--amber-wash); color:var(--amber); border:1px solid var(--amber-border);}
+  .flag.stop{background:var(--red-wash); color:var(--red); border:1px solid var(--red-border);}
+
+  /* ---------- verdict ---------- */
+  .verdict{position:sticky; top:18px; border:1px solid var(--border); border-radius:8px; overflow:hidden;}
+  .v-head{padding:16px 18px 14px;}
+  .v-chip{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:600;
+          letter-spacing:0.08em; text-transform:uppercase; padding:5px 12px; border-radius:999px; margin-bottom:10px;}
+  .v-chip .dot{width:8px; height:8px; border-radius:50%;}
+  .v-red .v-chip{background:var(--red-wash); color:var(--red); border:1px solid var(--red-border);}
+  .v-red .v-chip .dot{background:var(--red);}
+  .v-amber .v-chip{background:var(--amber-wash); color:var(--amber); border:1px solid var(--amber-border);}
+  .v-amber .v-chip .dot{background:var(--amber);}
+  .v-green .v-chip{background:var(--green-wash); color:var(--green); border:1px solid var(--green-border);}
+  .v-green .v-chip .dot{background:var(--green);}
+  .v-gray .v-chip{background:var(--wash); color:var(--muted); border:1px solid var(--border);}
+  .v-gray .v-chip .dot{background:var(--faint);}
+  .v-headline{font-size:15px; font-weight:600; line-height:1.4;}
+  .v-sub{font-size:12.5px; color:var(--muted); margin-top:5px;}
+  .v-body{border-top:1px solid var(--border);}
+  .v-sec{padding:13px 18px; border-bottom:1px solid var(--hair);}
+  .v-sec:last-child{border-bottom:none;}
+  .v-sec h3{font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);
+            font-weight:600; margin-bottom:8px;}
+  ul.rules{list-style:none; display:flex; flex-direction:column; gap:7px;}
+  ul.rules li{font-size:13px; line-height:1.45; padding-left:16px; position:relative;}
+  ul.rules li::before{content:""; position:absolute; left:2px; top:7px; width:6px; height:6px; border-radius:2px;}
+  ul.rules li.hot::before{background:var(--red);}
+  ul.rules li.caut::before{background:var(--amber);}
+  ul.rules li.ok::before{background:var(--green);}
+  ul.rules li .cite{color:var(--faint); font-size:11px; white-space:nowrap;}
+  .stop-msg{background:var(--red-wash); border:1px solid var(--red-border); color:var(--red);
+            font-size:12.5px; font-weight:500; padding:8px 11px; border-radius:5px; margin-bottom:9px; display:none;}
+  .stop-msg.show{display:block;}
+
+  /* cumulative meter */
+  .meter{margin-top:2px;}
+  .meter .nums{display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:4px;}
+  .meter .nums b{font-family:var(--mono); font-weight:500; color:var(--ink);}
+  .meter .bar{height:8px; border-radius:4px; background:var(--wash); border:1px solid var(--border); position:relative; overflow:visible;}
+  .meter .fill{height:100%; border-radius:3px; background:var(--accent); width:0%; max-width:100%; transition:width .2s ease;}
+  .meter .fill.hot{background:var(--red);}
+  .meter .fill.mid{background:var(--amber);}
+  .meter .tick{position:absolute; left:66.6%; top:-3px; bottom:-3px; width:2px; background:var(--ink); opacity:.55;}
+  .meter .tick-label{position:absolute; left:66.6%; top:12px; transform:translateX(-50%);
+        font-size:9.5px; color:var(--muted); white-space:nowrap;}
+
+  .kv{display:grid; grid-template-columns:1fr auto; gap:4px 12px; font-size:12.5px;}
+  .kv .k{color:var(--muted);}
+  .kv .v{font-family:var(--mono); font-weight:500; text-align:right;}
+  .kv .v.over{color:var(--amber); }
+  .kv .v.wayover{color:var(--red);}
+
+  /* footer refs */
+  footer{margin-top:34px; border-top:1px solid var(--border); padding-top:14px;}
+  details summary{font-size:12.5px; color:var(--muted); cursor:pointer; user-select:none;}
+  details summary:hover{color:var(--ink);}
+  .refs{margin-top:10px; display:flex; flex-direction:column; gap:6px;}
+  .ref{display:grid; grid-template-columns:30px 1fr; gap:8px; font-size:12px; line-height:1.5;}
+  .ref .n{font-family:var(--mono); color:var(--faint); font-size:11.5px; padding-top:1px;}
+  .ref .doi{color:var(--accent-ink); font-family:var(--mono); font-size:11.5px; word-break:break-all;}
+  .ref .cite-ref{color:var(--muted);}
+  .fineprint{margin-top:16px; font-size:11px; color:var(--faint); line-height:1.6;}
+
+  /* rct strip */
+  .rct{margin-top:26px; border-top:1px solid var(--border); padding-top:12px;
+       display:grid; grid-template-columns:repeat(4, 1fr); gap:14px;}
+  .rct .cell{font-size:11.5px; color:var(--muted); line-height:1.5;}
+  .rct .study{font-family:var(--mono); font-size:11px; color:var(--ink); display:block; margin-bottom:1px;}
+  @media (max-width:900px){ .rct{grid-template-columns:1fr 1fr;} }
+
+  @media print{
+    body{font-size:12px;}
+    .app{max-width:100%; padding:0;}
+    .verdict{position:static;}
+    .seg button, .check, details summary{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    header{margin-bottom:2px;}
+    .topline .note-hide{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>Haloperidol <span class="ev">endovenoso</span> · riesgo QT/TdP</h1>
+    <div class="sub">Calculadora de decisión · reglas trazadas a evidencia</div>
+  </header>
+  <div class="topline">
+    <span class="note" style="font-size:12px;color:var(--muted);">Completa los campos — el veredicto se actualiza en vivo. No predice QTc: integra valores medidos y factores de riesgo.</span>
+    <span class="note-hide" style="font-size:11px;color:var(--faint);">Uso asistido · no reemplaza juicio clínico</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- ================= FORM ================= -->
+    <div>
+      <section>
+        <div class="sec-label">1 · Paciente</div>
+        <div class="row">
+          <div class="field">
+            <label for="edad">Edad (años)</label>
+            <input type="number" id="edad" min="0" max="110" placeholder="65" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label id="sexo-label">Sexo</label>
+            <div class="seg" role="group" aria-labelledby="sexo-label">
+              <button type="button" data-sexo="m" aria-pressed="false">Masculino</button>
+              <button type="button" data-sexo="f" aria-pressed="false">Femenino</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-label">2 · ECG</div>
+        <div class="row">
+          <div class="field">
+            <label for="qtc-basal">QTc basal (ms)</label>
+            <input type="text" id="qtc-basal" inputmode="numeric" placeholder="--" autocomplete="off">
+            <span class="hint">Déjalo vacío si no hay ECG basal</span>
+          </div>
+          <div class="field">
+            <label for="qtc-control">QTc control durante tto (ms)</label>
+            <input type="text" id="qtc-control" inputmode="numeric" placeholder="opcional" autocomplete="off">
+            <span class="hint">Compara contra basal</span>
+          </div>
+        </div>
+        <div class="qt-live">
+          <span class="flag" id="flag-delta"></span>
+          <span class="flag" id="flag-500"></span>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-label">3 · Factores de riesgo</div>
+        <div class="row">
+          <div class="field">
+            <label for="potasio">K⁺ (mEq/L)</label>
+            <input type="text" id="potasio" inputmode="decimal" placeholder="3,5" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="qt-co">Nº fármacos QT+ concomitantes</label>
+            <input type="number" id="qt-co" min="0" max="10" placeholder="0" inputmode="numeric">
+            <span class="hint">p. ej. amiodarona, ondansetrón, fluoroquinolonas</span>
+          </div>
+        </div>
+        <div class="checks">
+          <label class="check">
+            <input type="checkbox" id="ic">
+            <span class="box"></span>
+            <span class="txt">Insuficiencia cardiaca o cardiopatía estructural<span class="why">factor independiente de QT severo · Wang 2023</span></span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="electrolitos">
+            <span class="box"></span>
+            <span class="txt">Hipomagnesemia o hipocalcemia<span class="why">depósito QT/TdP</span></span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="bradicardia">
+            <span class="box"></span>
+            <span class="txt">Bradicardia &lt; 50 lpm<span class="why">favorece TdP</span></span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="tdp">
+            <span class="box"></span>
+            <span class="txt">Historia personal de torsades o síncope por QT largo<span class="why">contraindicación relativa</span></span>
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <div class="sec-label">4 · Tratamiento planificado</div>
+        <div class="row">
+          <div class="field">
+            <label for="dosis">Dosis por administración (mg IV)</label>
+            <input type="text" id="dosis" inputmode="decimal" placeholder="2,5" autocomplete="off">
+          </div>
+          <div class="field">
+            <label id="freq-label">Frecuencia</label>
+            <div class="seg" role="group" aria-labelledby="freq-label">
+              <button type="button" data-freq="3" aria-pressed="true">c/8 h</button>
+              <button type="button" data-freq="2" aria-pressed="false">c/12 h</button>
+              <button type="button" data-freq="4" aria-pressed="false">c/6 h</button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="dias">Días previstos de tratamiento</label>
+            <input type="number" id="dias" min="0" max="30" placeholder="3" inputmode="numeric">
+          </div>
+          <div class="field" style="justify-content:flex-end;">
+            <span class="hint" style="padding-bottom:2px;">Referencia RCT: máx diario 20 mg (AID-ICU, MIND-USA)</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================= VERDICT ================= -->
+    <aside class="verdict v-gray" id="verdict" aria-live="polite">
+      <div class="v-head">
+        <span class="v-chip" id="v-chip"><span class="dot"></span><span id="v-chip-txt">—</span></span>
+        <div class="v-headline" id="v-headline">Completa los datos del paciente</div>
+        <div class="v-sub v-subtxt" id="v-sub" style="font-size:12.5px;color:var(--muted);margin-top:6px;">El veredicto integra dosis, QTc medido y factores de riesgo documentados.</div>
+      </div>
+      <div class="v-body">
+        <div class="v-sec" id="sec-alert">
+          <div class="stop-msg" id="stop-msg"></div>
+          <h3>Reglas activadas</h3>
+          <ul class="rules" id="rules-list"></ul>
+        </div>
+        <div class="v-sec">
+          <h3>Antes / durante</h3>
+          <ul class="rules" id="checklist"></ul>
+        </div>
+        <div class="v-sec">
+          <h3>Dosis acumulada</h3>
+          <div class="meter">
+            <div class="nums"><span><b id="cum-total" style="font-size:14px;">0</b> mg planificados</span><span id="cum-daily" style="font-family:var(--mono);">0 mg/día</span></div>
+            <div class="bar">
+              <div class="fill" id="cum-fill"></div>
+              <div class="tick"></div>
+            </div>
+            <div style="font-size:10px;color:var(--faint);margin-top:10px;">▲ 100 mg — telemetría si riesgo alto (Beach 2020)</div>
+          </div>
+        </div>
+        <div class="v-sec">
+          <h3>Umbrales de suspensión</h3>
+          <ul class="rules">
+            <li class="caut">QTc se alarga <b>≥25%</b> del basal <span class="cite">[6]</span></li>
+            <li class="caut">QTc absoluto <b>&gt;500 ms</b> <span class="cite">[1][5]</span></li>
+            <li class="caut">Pre-síncope, mareo, palpitaciones → ECG inmediato</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- RCT dosing reference strip -->
+  <div class="rct">
+    <div class="study" style="font-family:var(--font);font-size:12.5px;color:var(--muted);grid-column:1/-1;margin-bottom:-4px;"><b style="color:var(--ink);">Pautas usadas en RCTs pivotales</b> — ninguna mostró alterar el curso del delirium; la utilidad documentada es sintomática (agitación)</div>
+    <div class="study" style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;"><span class="study">Hope-ICU 2013</span>2,5 mg c/8 h fijo × 14 d máx</div>
+    <div class="study" style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;"><span class="study">MIND-USA 2018</span>bolos, máx 20 mg/día</div>
+    <div class="study" style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;"><span class="study">AID-ICU 2022</span>2,5 mg c/8 h + 2,5 PRN ≤20 mg/d</div>
+    <div class="study" style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;"><span class="study">EuRIDICE 2023</span>2,5 c/8 h → 5 mg c/8 h si persiste</div>
+  </div>
+
+  <footer>
+    <details>
+      <summary>Fuentes — reglas y evidencia (DOIs)</summary>
+      <div class="refs">
+        <div class="ref"><span class="n">[1]</span><span>Wang CL et al. QT severo con quetiapina o haloperidol: 14,2% QT &gt;500/Δ&gt;60; factores: edad, IC, hipokalemia, amiodarona, QTc basal. <span class="doi">10.1016/j.hrthm.2023.10.027</span></span></div>
+        <div class="ref"><span class="n">[2]</span><span>Beach SR et al. Revisión sistemática IVH: ECG solo con dosis &gt;5 mg; telemetría si riesgo alto + acumulada ≥100 mg o QTc &gt;500. <span class="doi">10.1016/j.genhosppsych.2020.08.008</span></span></div>
+        <div class="ref"><span class="n">[3]</span><span>Meyer-Massetti C et al. 70 casos QT/TdP con IVH post-aviso FDA 2007: 97% con factores de riesgo agregados, 96% QTc &gt;450. <span class="doi">10.1002/jhm.691</span></span></div>
+        <div class="ref"><span class="n">[4]</span><span>Stollings JL et al. (MIND-USA). Monitoreo QTc diario aporta poco con QTc basal normal y pocos factores; 0 TdP. <span class="doi">10.1001/jamanetworkopen.2023.52034</span></span></div>
+        <div class="ref"><span class="n">[5]</span><span>Garcia M et al. Meta 84 RCT n=12.180: sin exceso MACE vs placebo (RR 0,93). <span class="doi">10.1371/journal.pone.0326804</span></span></div>
+        <div class="ref"><span class="n">[6]</span><span>Lawrence K, Nasraway S. Suspender butirofenónicos si QTc se alarga ≥25% del basal en críticos. <span class="doi">10.1002/j.1875-9114.1997.tb03061.x</span></span></div>
+        <div class="ref"><span class="n">[7]</span><span>Hatta K et al. ΔQTc correlaciona con dosis IV (r=0,48); 4/47 QTc &gt;500 a 8 h. <span class="doi">10.1097/00004714-200106000-00002</span></span></div>
+        <div class="ref"><span class="n">[8]</span><span>Levinsohn EA et al. Cut-offs de QTc como criterio de uso: heurístico inapropiado; es cálculo riesgo-beneficio, no algoritmo. <span class="doi">10.1097/HRP.0000000000000456</span></span></div>
+      </div>
+    </details>
+    <p class="fineprint">Herramienta de apoyo a la decisión clínica. No constituye prescripción ni protocolo institucional; las decisiones finales corresponden al clínico tratante según el paciente y el contexto local. Veredicto construido con reglas explícitas y trazables — ninguna regla es ponderación oculta.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const inputs = ["edad","qtc-basal","qtc-control","potasio","qt-co","dosis","dias"].map($);
+  const checks = ["ic","electrolitos","bradicardia","tdp"].map($);
+
+  let sexo = null, freq = 3;
+  document.querySelectorAll("[data-sexo]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll("[data-sexo]").forEach(b=>b.setAttribute("aria-pressed","false"));
+      btn.setAttribute("aria-pressed","true");
+      sexo = btn.dataset.sexo;
+      calc();
+    });
+  });
+  document.querySelectorAll("[data-freq]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll("[data-freq]").forEach(b=>b.setAttribute("aria-pressed","false"));
+      btn.setAttribute("aria-pressed","true");
+      freq = parseInt(btn.dataset.freq, 10);
+      calc();
+    });
+  });
+  inputs.forEach(i=>i.addEventListener("input", calc));
+  checks.forEach(i=>i.addEventListener("change", calc));
+
+  const num = (id) => {
+    const el = $(id); if (!el) return null;
+    /* acepta coma o punto como decimal (los rangos de estos campos nunca usan miles) */
+    const v = el.value.trim().replace(",", ".");
+    if (v === "") return null;
+    const n = parseFloat(v);
+    return isNaN(n) ? null : n;
+  };
+  const fmt = (n, dec=1) => n.toLocaleString("es-CL", {minimumFractionDigits:0, maximumFractionDigits:dec});
+
+  function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
+  function calc(){
+    const edad = num("edad");
+    const qtcB = num("qtc-basal");
+    const qtcC = num("qtc-control");
+    const k    = num("potasio");
+    const co   = num("qt-co") ?? 0;
+    const dose = num("dosis");
+    const dias = num("dias") ?? 0;
+    const ic   = $("ic").checked;
+    const hypo = $("electrolitos").checked;
+    const brady= $("bradicardia").checked;
+    const tdpH = $("tdp").checked;
+
+    const daily = (dose!=null && freq) ? dose*freq : null;
+    const cum   = (daily!=null) ? daily*dias : 0;
+
+    /* ---- live QTc flags ---- */
+    const f500 = $("flag-500"), fd = $("flag-delta");
+    f500.className = "flag"; fd.className = "flag";
+    let delta25 = false, ctrl500 = false;
+    if (qtcB != null && qtcC != null){
+      const d = qtcC - qtcB;
+      if (qtcC > 500){ ctrl500 = true; f500.textContent = "QTc control >500 ms"; f500.classList.add("show","stop"); }
+      else if (qtcC >= 460){ f500.textContent = "QTc control 460–500 ms"; f500.classList.add("show","warn"); }
+      if (d >= 0.25*qtcB){ delta25 = true; fd.textContent = "Δ +"+Math.round(d)+" ms (≥25% del basal)"; fd.classList.add("show","stop"); }
+      else if (d >= 0.15*qtcB){ fd.textContent = "Δ +"+Math.round(d)+" ms"; fd.classList.add("show","warn"); }
+    }
+
+    /* ---- risk factors [1] Wang 2023 ---- */
+    const rfs = [];
+    if (edad != null && edad >= 65) rfs.push("Edad ≥65");
+    if (ic)  rfs.push("Insuficiencia cardiaca / estructura");
+    if (k != null && k < 3.5) rfs.push("Hipokalemia (K "+k.toFixed(1)+")");
+    if (hypo) rfs.push("Hipomagnesemia/hipocalcemia");
+    if (brady) rfs.push("Bradicardia <50");
+    if (co >= 1) rfs.push(co + " fármaco(s) QT-plus");
+    /* QTc basal como factor: >=450 en varón / >=460 en mujer */
+    const qtcHi = qtcB != null && qtcB >= (sexo==="f" ? 460 : 450);
+
+    /* ---- rules ---- */
+    const hot = [], caut = [], ok = [], chk = [];
+
+    /* R-stop: contraindicación relativa */
+    if (tdpH) hot.push(["TdP previa — considerar antipsicótico alternativo; EV solo si no hay opción y con telemetría","[3]"]);
+    if (qtcB != null && qtcB >= 500) hot.push(["QTc basal ≥500 ms — no iniciar; tratar causa (K⁺/Mg²⁺, bradicardia, co-meds)","[1][2]"]);
+    if (k != null && k < 3.0) hot.push(["K⁺ <3,0 — corregir antes de administrar (TdP casi siempre con factores agregados)","[3][1]"]);
+    if (ctrl500) hot.push(["QTc control >500 ms — suspender y repetir ECG","[1]"]);
+    if (delta25) hot.push(["ΔQTc ≥25% vs basal — suspender / reducir dosis","[6]"]);
+
+    /* R-caution */
+    if (qtcHi && qtcB < 500) caut.push(["QTc basal "+qtcB+" ms (prolongado) — cuantifica el riesgo; sumado a otros factores dispara telemetría","[1]"]);
+    if (k != null && k >= 3.0 && k < 3.5) caut.push(["K⁺ "+fmt(k)+" — corregir a ≥4,0 antes/mientras dosifica","[1]"]);
+    if (co >= 1) caut.push([co+" fármaco(s) QT⁺ concomitante(s) — revisar si son prescindibles (factor más frecuente en los 70 casos TdP)","[3]"]);
+    if (rfs.length >= 2) caut.push([rfs.length+" factores de riesgo acumulados (edad, IC, electrolitos, bradicardia, co-meds, QTc base)","[1]"]);
+    if (daily != null && daily > 20) caut.push([fmt(daily,0)+" mg/día supera el máximo de los RCTs (20 mg/d) — sin respaldo de eficacia y más exposición QT","[7]"]);
+
+    /* Beach-2020 monitoring gates */
+    if (dose != null && dose > 5) caut.push(["Dosis por administración "+fmt(dose)+" mg >5 — ECG/monitoreo continuo durante la administración","[2]"]);
+    if (qtcB == null && ((dose!=null && dose>5) || (daily!=null && daily>5)))
+      caut.push(["Sin QTc basal con dosis >5 mg/día — obtener ECG basal antes de partir","[2][4]"]);
+    if (daily != null && daily >= 100)
+      caut.push(["Dosis diaria ≥100 mg: fuera de todo respaldo; si ocurre, es uso excepcional con telemetría obligatoria","[2]"]);
+
+    /* telemetry rule — must be surfaced in checklist */
+    const telemetry = (qtcB != null && qtcB >= 500) || tdpH || ctrl500 || delta25 ||
+                      (daily != null && daily >= 100 && rfs.length >= 1);
+    if (telemetry) chk.push(["Telemetría/monitoreo continuo durante el tratamiento — riesgo QT/TdP activo","[2][3]"]);
+
+    /* ---- checklist ---- */
+    if (qtcB == null) chk.push(["ECG basal con QTc — requisito para calcular Δ y umbral 500 ms","[2]"]);
+    if (k == null) chk.push(["Medir K⁺ y Mg²⁺ basales antes de iniciar","[1]"]);
+    /* Dosis ≤5 mg sin factores y sin alertas dinámicas: ECG opcional */
+    if (dose != null && dose <= 5 && (qtcB == null || !qtcHi) && rfs.length===0 && !ctrl500 && !delta25)
+      ok.push(["Dosis ≤5 mg sin factores: ECG rutinario opcional según Beach 2020","[2]"]);
+    if (dose != null && dose > 5) chk.push(["ECG durante administración >5 mg (no solo pre-dosis)","[2]"]);
+    if (daily != null && daily >= 100 && rfs.length >= 1) chk.push(["Telemetría continua (acumulada en curso → 100 mg con factor de riesgo)","[2]"]);
+    ok.push(["Reevaluar indicación a 24–48 h: suspender al resolver la agitación","—"]);
+
+    /* ---- verdict ---- */
+    const v = $("verdict"), chip = $("v-chip-txt"), head = $("v-headline"), sub = $("v-sub");
+    let cls, chipTxt, headline, subTxt;
+    const anyData = (edad!=null) || (dose!=null) || checks.some(c=>c.checked);
+    if (!anyData){
+      cls = "v-gray"; chipTxt = "esperando datos"; headline = "Completa los datos del paciente";
+      subTxt = "El veredicto integra dosis, QTc medido y factores de riesgo documentados.";
+    } else if (hot.length){
+      cls = "v-red"; chipTxt = "alto riesgo";
+      headline = "No iniciar / suspender hasta corregir";
+      subTxt = "Condiciones activas que concentran el riesgo de TdP documentado. Corrige y reevalúa.";
+    } else if (caut.length){
+      cls = "v-amber"; chipTxt = "con precauciones";
+      headline = "Puede administrarse con precauciones";
+      subTxt = rfs.length ? (rfs.length+" factor(es) de riesgo activo(s).") : "Dosis o monitoreo por encima del estándar — cumple las condiciones.";
+    } else {
+      cls = "v-green"; chipTxt = "bajo riesgo";
+      headline = "Perfil de bajo riesgo";
+      subTxt = "Dosis estándar, sin factores: riesgo comparable al resto de antipsicóticos [5]. Reevalúa a 24–48 h y usa la dosis mínima eficaz.";
+    }
+    v.className = "verdict "+cls;
+    chip.textContent = chipTxt;
+    head.textContent = headline;
+    sub.textContent = subTxt;
+
+    /* stop-msg */
+    const sm = $("stop-msg");
+    if (hot.length){
+      sm.textContent = "⚠ " + hot[0][0];
+      sm.classList.add("show");
+    } else { sm.classList.remove("show"); }
+
+    /* rules list */
+    const ul = $("rules-list");
+    ul.innerHTML = "";
+    const all = [...hot, ...caut, ...ok];
+    if (!all.length){
+      ul.innerHTML = '<li>—</li>';
+    } else {
+      all.forEach(([txt, cite])=>{
+        const isHot = hot.some(h=>h[0]===txt), isCaut = caut.some(c=>c[0]===txt);
+        const li = document.createElement("li");
+        li.className = isHot ? "hot" : (isCaut ? "caut" : "ok");
+        li.innerHTML = esc(txt) + (cite && cite!=="—" ? ' <span class="cite">'+cite+'</span>' : "");
+        ul.appendChild(li);
+      });
+    }
+
+    /* checklist */
+    const cl = $("checklist");
+    cl.innerHTML = "";
+    const items = [...chk, ["Reevaluar indicación a 24–48 h: suspender al resolver la agitación","—"]];
+    const seen = new Set();
+    items.forEach(([txt,cite])=>{
+      if (seen.has(txt)) return; seen.add(txt);
+      const li = document.createElement("li");
+      li.className = "caut";
+      li.innerHTML = "□ " + esc(txt) + (cite && cite!=="—" ? ' <span class="cite">'+cite+'</span>' : "");
+      cl.appendChild(li);
+    });
+    if (!cl.children.length) cl.innerHTML = '<li style="color:var(--faint);">Sin pendientes con los datos actuales</li>';
+
+    /* meter */
+    const fill = $("cum-fill");
+    const total = daily ? daily*dias : 0;
+    $("cum-total").textContent = total;
+    $("cum-daily").textContent = (daily ?? 0) + " mg/día";
+    const pct = Math.min(100, (total/150)*100);
+    fill.style.width = pct + "%";
+    fill.className = "fill" + (total>=100 ? " hot" : (total>=50 ? " mid" : ""));
+  }
+
+  calc();
+})();
+</script>
+</body>
+</html>
