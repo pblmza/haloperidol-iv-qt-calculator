@@ -141,6 +141,8 @@
   ul.rules li.hot::before{background:var(--red);}
   ul.rules li.caut::before{background:var(--amber);}
   ul.rules li.ok::before{background:var(--green);}
+  /* checklist: un solo marcador — cuadrado hueco de "pendiente", sin prefijo de texto */
+  #checklist li::before{background:transparent; border:1.5px solid var(--faint); width:8px; height:8px; top:6px;}
   ul.rules li .cite{color:var(--faint); font-size:11px; white-space:nowrap;}
   .stop-msg{background:var(--red-wash); border:1px solid var(--red-border); color:var(--red);
             font-size:12.5px; font-weight:500; padding:8px 11px; border-radius:5px; margin-bottom:9px; display:none;}
@@ -592,7 +594,7 @@
       if (seen.has(txt)) return; seen.add(txt);
       const li = document.createElement("li");
       li.className = "caut";
-      li.innerHTML = "□ " + esc(txt) + (cite && cite!=="—" ? ' <span class="cite">'+cite+'</span>' : "");
+      li.innerHTML = esc(txt) + (cite && cite!=="—" ? ' <span class="cite">'+cite+'</span>' : "");
       cl.appendChild(li);
     });
     if (!cl.children.length) cl.innerHTML = '<li style="color:var(--faint);">Sin pendientes con los datos actuales</li>';
