@@ -38,6 +38,10 @@ Abrir `index.html` en cualquier navegador. Sin dependencias, sin datos que salga
 
 Herramienta de apoyo a la decisión clínica. No constituye prescripción ni protocolo institucional; las decisiones finales corresponden al clínico tratante según el paciente y el contexto local. El veredicto integra valores **medidos** (nunca predice QTc) y factores de riesgo documentados.
 
+## Versiones y vigencia
+
+**v1.0.0** · Evidencia revisada por última vez: **31-08-2026** (ver [CHANGELOG.md](CHANGELOG.md) para el detalle completo de reglas por versión). Próxima revisión sugerida: ante nuevos RCTs o ≤12 meses (ago-2027). Una herramienta que codifica umbrales envejece — revisa la versión antes de confiar en un umbral.
+
 ## Licencia
 
 MIT
