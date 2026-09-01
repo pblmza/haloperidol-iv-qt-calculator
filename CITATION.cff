@@ -20,6 +20,14 @@ url: "https://pblmza.github.io/haloperidol-iv-qt-calculator/"
 version: 1.0.0
 date-released: "2026-09-01"
 license: MIT
+doi: "10.5281/zenodo.22231704"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22231704"
+    description: "DOI de concepto — resuelve siempre a la versión más reciente"
+  - type: doi
+    value: "10.5281/zenodo.22231705"
+    description: "DOI de la versión 1.0.0"
 keywords:
   - haloperidol
   - intervalo QT
