@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "Si utiliza esta herramienta, por favor cítela como se indica a continuación."
+title: "Calculadora: haloperidol endovenoso y riesgo QT/TdP"
+abstract: >-
+  Herramienta de apoyo a la decisión clínica que integra el QTc medido, los factores
+  de riesgo documentados y la dosis planificada de haloperidol endovenoso para
+  estratificar el riesgo de prolongación del intervalo QT y de torsades de pointes.
+  Las reglas son explícitas y trazables a evidencia publicada identificada por DOI;
+  la herramienta no predice el QTc ni pondera de forma oculta. Desarrollada para uso
+  en psiquiatría de enlace e interconsulta hospitalaria.
+type: software
+authors:
+  - given-names: Pablo
+    family-names: Moreira-Zabala
+    email: pablo.moreira.z@usach.cl
+    affiliation: "Unidad de Psiquiatría de Enlace y Medicina Psicosomática, Complejo Asistencial Barros Luco Trudeau, Servicio de Salud Metropolitano Sur, Santiago, Chile"
+    orcid: "https://orcid.org/0009-0004-2306-0273"
+repository-code: "https://github.com/pblmza/haloperidol-iv-qt-calculator"
+url: "https://pblmza.github.io/haloperidol-iv-qt-calculator/"
+version: 1.0.0
+date-released: "2026-09-01"
+license: MIT
+keywords:
+  - haloperidol
+  - intervalo QT
+  - torsades de pointes
+  - delirium
+  - agitación psicomotora
+  - psiquiatría de enlace
+  - medicina psicosomática
+  - apoyo a la decisión clínica
+  - seguridad del paciente
